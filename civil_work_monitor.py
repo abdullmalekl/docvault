@@ -117,6 +117,19 @@ class CivilWorkAnalyzer:
         "تمديدات كهربائية":    7,  "تمديدات صحية":            7,  "water supply":         6,
         "نظام صرف":          6,  "drainage":                  6,  "sanitation":           6,
         "معالجة المياه":      7,  "waste management":          6,  "garbage collection":   5,
+        # --- Communications & Telecom Infrastructure ---
+        "أبراج الاتصالات":    10, "communication tower":       10, "telecom tower":       10,
+        "برج اتصالات":        10, "tower construction":        10, "tower installation":  10,
+        "فايبر":              9,  "fiber":                     9,  "optical fiber":       9,
+        "ألياف بصرية":        10, "خط فايبر":                 10, "fiber optic":         10,
+        "خطوط الألياف":       10, "fiber lines":               10, "fiber cable":        9,
+        "حفر خطوط":           8,  "digging fiber":             8,  "laying fiber":        8,
+        "كابلات اتصالات":     9,  "communication cables":      9,  "telecom cables":      9,
+        "البنية التحتية للاتصالات": 10, "telecom infrastructure": 10, "communication infrastructure": 10,
+        "شبكة اتصالات":       9,  "communication network":     9,  "telecom network":     9,
+        "خطوط اتصالات":       9,  "communication lines":       9,  "telecom lines":       9,
+        "منشآت اتصالات":      10, "telecom facilities":        10, "communication facilities": 10,
+        "صيانة أبراج":        9,  "tower maintenance":         9,  "maintenance tower":   9,
         "كميات الكمية":       8,  "bill of quantities":        9,  "boq":                  9,
         "رسومات هندسية":      8,  "technical drawings":        9,  "architectural drawings": 9,
         "تصاميم":             7,  "specifications":            8,  "contract documents":   8,
@@ -135,11 +148,12 @@ class CivilWorkAnalyzer:
     NOT_CIVIL_SIGNALS = {
         "solar": -10, "photovoltaic": -10, "pv system": -10, "solar panel": -10,
         "شمسي": -10, "خلايا شمسية": -10, "طاقة شمسية": -10,
-        "it system": -8, "network": -8, "software": -8, "نظام معلومات": -8,
+        "it system": -8, "software": -8, "نظام معلومات": -8,
         "office equipment": -8, "مستلزمات مكاتب": -8, "stationery": -10,
         "furniture": -9, "أثاث": -9, "vehicles": -9, "مركبات": -9,
         "food": -8, "مواد غذائية": -8, "medical equipment": -8, "معدات طبية": -8,
         "security guard": -10, "حارسة أمنية": -10,
+        # Note: "network" removed to allow telecom infrastructure projects
     }
 
     # --- Labour-only signals (pure staffing with no construction) ---
@@ -152,6 +166,15 @@ class CivilWorkAnalyzer:
 
     # --- Target sectors ---
     SECTORS = {
+        "أبراج الاتصالات والألياف البصرية": {
+            "keywords": ["برج اتصالات", "communication tower", "telecom tower",
+                        "فايبر", "fiber", "ألياف بصرية", "optical fiber",
+                        "خطوط الألياف", "fiber lines", "حفر خطوط", "laying fiber",
+                        "البنية التحتية للاتصالات", "telecom infrastructure",
+                        "كابلات اتصالات", "communication cables", "شبكة اتصالات",
+                        "منشآت اتصالات", "telecom facilities", "صيانة أبراج"],
+            "color": "#0066CC", "icon": "📡"
+        },
         "مباني حكومية": {
             "keywords": ["حكومي", "وزارة", "ministry", "government", "مكتب", "office",
                         "مبنى إداري", "administrative building"],
@@ -180,6 +203,31 @@ class CivilWorkAnalyzer:
 
     # --- Solution mapping (context-aware) ---
     SOLUTIONS = [
+        {
+            "triggers":   ["برج اتصالات", "communication tower", "telecom tower",
+                          "tower construction", "بناء برج", "تشييد برج"],
+            "solution":   "مشروع بناء برج اتصالات — Communication Tower Construction",
+            "value_range": (200_000, 2_000_000),
+        },
+        {
+            "triggers":   ["فايبر", "fiber", "ألياف بصرية", "optical fiber",
+                          "خطوط الألياف", "fiber lines", "حفر خطوط", "laying fiber",
+                          "fiber optic", "خط فايبر"],
+            "solution":   "مشروع حفر وتمديد خطوط الألياف البصرية — Fiber Optic Cable Laying Project",
+            "value_range": (150_000, 1_500_000),
+        },
+        {
+            "triggers":   ["صيانة أبراج", "tower maintenance", "maintenance tower",
+                          "صيانة", "tower repair", "إصلاح برج"],
+            "solution":   "مشروع صيانة وإصلاح أبراج الاتصالات — Tower Maintenance & Repair",
+            "value_range": (100_000, 800_000),
+        },
+        {
+            "triggers":   ["البنية التحتية للاتصالات", "telecom infrastructure",
+                          "communication infrastructure", "منشآت اتصالات"],
+            "solution":   "مشروع البنية التحتية للاتصالات — Telecom Infrastructure Project",
+            "value_range": (300_000, 3_000_000),
+        },
         {
             "triggers":   ["rehabilitation", "تأهيل", "إعادة تأهيل", "renovations",
                           "تجديد", "refurbishment"],
