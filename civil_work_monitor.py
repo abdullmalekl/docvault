@@ -153,6 +153,10 @@ class CivilWorkAnalyzer:
         "furniture": -9, "أثاث": -9, "vehicles": -9, "مركبات": -9,
         "food": -8, "مواد غذائية": -8, "medical equipment": -8, "معدات طبية": -8,
         "security guard": -10, "حارسة أمنية": -10,
+        # Medical/Healthcare waste and non-civil projects
+        "medical waste": -10, "مخلفات طبية": -10, "waste disposal": -10,
+        "hospital waste": -10, "النفايات الطبية": -10, "معالجة المخلفات": -10,
+        "صيانة صحية": -8, "cleaning": -10, "تنظيف": -10,
         # Note: "network" removed to allow telecom infrastructure projects
     }
 
@@ -319,6 +323,19 @@ class CivilWorkAnalyzer:
                 best_sector_score = score
                 sector_name = sec_name
                 sector_meta = sec_data
+
+        # --- 3b. التحقق الصارم من مشاريع الاتصالات ---
+        # يجب أن تحتوي على كلمات اتصالات فعلية وليس فقط كلمات عامة
+        if sector_name == "أبراج الاتصالات والألياف البصرية":
+            telecom_keywords = [
+                "برج", "tower", "فايبر", "fiber", "ألياف", "cable",
+                "اتصالات", "telecom", "communication", "إنترنت", "internet"
+            ]
+            has_telecom_keyword = any(k in combined for k in telecom_keywords)
+
+            # إذا لم يكن هناك كلمة اتصالات فعلية، رفض المشروع
+            if not has_telecom_keyword:
+                return None
 
         # --- 4. اقتراح الحل ---
         matched_solutions = []
