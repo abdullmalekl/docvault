@@ -23,7 +23,7 @@ namespace DocVault.Core.Workflow
         public string WorkflowName { get; set; }
         public List<WorkflowStage> Stages { get; set; } = new();
 
-        public int CurrentStageIndex { get; set; } = 0
+        public int CurrentStageIndex { get; set; } = 0;
         public DocumentWorkflowStatus Status { get; set; }
 
         public DateTime CreatedAt { get; set; }
