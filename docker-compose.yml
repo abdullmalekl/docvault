@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # DocVault Application
+  # ============================================================================
+  docvault-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: docvault-app
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5000
+      - Database__ConnectionString=Server=docvault-db;Database=DocVault;User Id=sa;Password=${SA_PASSWORD}
+    depends_on:
+      - docvault-db
+    networks:
+      - docvault-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ============================================================================
+  # SQL Server Database
+  # ============================================================================
+  docvault-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: docvault-db
+    environment:
+      - SA_PASSWORD=${SA_PASSWORD:-DocVault@2026!}
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - docvault-db-data:/var/opt/mssql/data
+      - ./DocVault_Module*.sql:/docker-entrypoint-initdb.d/:ro
+    networks:
+      - docvault-network
+    restart: unless-stopped
+
+  # ============================================================================
+  # Redis Cache (اختياري)
+  # ============================================================================
+  docvault-cache:
+    image: redis:7-alpine
+    container_name: docvault-cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - docvault-cache-data:/data
+    networks:
+      - docvault-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # ============================================================================
+  # Nginx Reverse Proxy
+  # ============================================================================
+  docvault-nginx:
+    image: nginx:alpine
+    container_name: docvault-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - docvault-app
+    networks:
+      - docvault-network
+    restart: unless-stopped
+
+# ============================================================================
+# Networks
+# ============================================================================
+networks:
+  docvault-network:
+    driver: bridge
+
+# ============================================================================
+# Volumes
+# ============================================================================
+volumes:
+  docvault-db-data:
+    driver: local
+  docvault-cache-data:
+    driver: local
+
+# ============================================================================
+# تعليقات:
+# - يتضمن التطبيق وSQL Server و Redis و Nginx
+# - استخدم: docker-compose up -d
+# - للإيقاف: docker-compose down
+# - تفقد السجلات: docker-compose logs -f
+# ============================================================================
