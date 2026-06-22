@@ -1,0 +1,52 @@
+{
+  "name": "DocVault Enterprise",
+  "description": "نظام إدارة المستندات الموثوقة على مستوى المؤسسات",
+  "repository": "https://github.com/alwadi/docvault",
+  "keywords": ["dotnet", "document-management", "enterprise", "security"],
+  "buildpacks": [
+    {
+      "url": "https://github.com/jincod/dotnetcore-buildpack"
+    }
+  ],
+  "env": {
+    "ASPNETCORE_ENVIRONMENT": {
+      "description": "Environment",
+      "value": "Production"
+    },
+    "DATABASE_URL": {
+      "description": "SQL Server Connection String",
+      "required": true
+    },
+    "REDIS_URL": {
+      "description": "Redis Connection String",
+      "required": false
+    },
+    "JWT_SECRET": {
+      "description": "JWT Secret Key",
+      "generator": "secret"
+    },
+    "SA_PASSWORD": {
+      "description": "SQL Server SA Password",
+      "generator": "secret"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "standard-1x"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:standard-0",
+      "as": "DATABASE"
+    },
+    {
+      "plan": "heroku-redis:premium-0",
+      "as": "REDIS"
+    }
+  ],
+  "scripts": {
+    "postdeploy": "dotnet test --no-build"
+  }
+}

@@ -1,0 +1,32 @@
+# Railway Configuration
+# Deploy to Railway.app بـ click واحد
+
+[build]
+builder = "dockerfile"
+
+[deploy]
+startCommand = "dotnet DocVault_Demo_Complete.dll"
+numReplicas = 1
+
+[[services]]
+name = "docvault-app"
+image = "ghcr.io/alwadi/docvault:latest"
+port = 5000
+
+[[services]]
+name = "docvault-db"
+image = "mcr.microsoft.com/mssql/server:2022-latest"
+port = 1433
+environment = {
+  SA_PASSWORD = "${{ env.DB_PASSWORD }}",
+  ACCEPT_EULA = "Y"
+}
+
+[[services]]
+name = "docvault-cache"
+image = "redis:7-alpine"
+port = 6379
+
+[environment]
+ASPNETCORE_ENVIRONMENT = "Production"
+ASPNETCORE_URLS = "http://+:5000"
