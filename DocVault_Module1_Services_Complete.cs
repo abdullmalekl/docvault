@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.IdentityModel.Tokens;
 using OtpNet;
+using DocVault.Core.Models;
 
 namespace DocVault.Core.Authentication
 {

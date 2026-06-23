@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DocVault.Core.Models;
 
 namespace DocVault.Core.UserManagement
 {
@@ -303,32 +304,8 @@ namespace DocVault.Core.UserManagement
     // MODEL CLASSES
     // =====================================================
 
-    public class User
-    {
-        public int UserID { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string FullName { get; set; }
-        public int DepartmentID { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedAt { get; set; }
-    }
-
-    public class Role
-    {
-        public int RoleID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool IsBuiltIn { get; set; }
-        public bool IsActive { get; set; }
-    }
-
-    public class Permission
-    {
-        public int PermissionID { get; set; }
-        public string Resource { get; set; }
-        public string Action { get; set; }
-    }
+    // User, Role, Permission are defined in DocVault.Core.Models (DocVault.Models.cs)
+    // Import with: using DocVault.Core.Models;
 
     public class AccessibleDepartment
     {
