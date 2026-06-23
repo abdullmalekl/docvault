@@ -89,7 +89,7 @@ namespace DocVault.Core.Security
         Task<List<EncryptionKey>> GetActiveKeysAsync(Guid organizationId);
     }
 
-    public class EncryptionService : IEncryptionService
+    public class EncryptionService 
     {
         private readonly IKeyManagementRepository _repository;
 

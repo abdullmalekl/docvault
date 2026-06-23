@@ -257,7 +257,7 @@ namespace DocVault.Core.Authentication
         Task LogPermissionChangeAsync(int userId, string resource, string permission, bool granted);
     }
 
-    public class AuditService : IAuditService
+    public class AuditService 
     {
         private readonly DbContext _dbContext;
 

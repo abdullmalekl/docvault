@@ -147,7 +147,7 @@ namespace DocVault.Core.Analytics
         Task<List<UserActivity>> GetTopUsersAsync(Guid organizationId, int top = 10);
     }
 
-    public class AnalyticsService : IAnalyticsService
+    public class AnalyticsService 
     {
         private readonly IAnalyticsRepository _repository;
         private readonly IDocumentRepository _documentRepository;

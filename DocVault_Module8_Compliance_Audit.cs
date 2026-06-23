@@ -163,7 +163,7 @@ namespace DocVault.Core.Compliance
         Task<bool> IsAccessAuthorizedAsync(Guid userId, Guid documentId, AuditActionType action);
     }
 
-    public class AuditService : IAuditService
+    public class AuditService 
     {
         private readonly IAuditRepository _repository;
         private readonly IAccessControlRepository _accessRepository;

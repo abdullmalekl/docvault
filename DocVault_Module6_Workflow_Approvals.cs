@@ -164,7 +164,7 @@ namespace DocVault.Core.Workflow
         Task<List<WorkflowStage>> GetWorkflowHistoryAsync(Guid workflowId);
     }
 
-    public class DocumentWorkflowService : IDocumentWorkflowService
+    public class DocumentWorkflowService
     {
         private readonly IWorkflowRepository _workflowRepository;
         private readonly IApprovalTaskRepository _approvalTaskRepository;
