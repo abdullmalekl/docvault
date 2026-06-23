@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DocVault.Core.Models;
+using DocVault.Core.Document;
 
 namespace DocVault.Core.UserManagement
 {
@@ -305,7 +305,7 @@ namespace DocVault.Core.UserManagement
     // =====================================================
 
     // User, Role, Permission are defined in DocVault.Core.Models (DocVault.Models.cs)
-    // Import with: using DocVault.Core.Models;
+    // Import with: using DocVault.Core.Document;
 
     public class AccessibleDepartment
     {

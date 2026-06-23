@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DocVault.Core.Models
+namespace DocVault.Core.Document
 {
     // =====================================================
     // CORE ENTITIES (Organization Structure)
@@ -460,61 +460,6 @@ namespace DocVault.Core.Models
         Task RevokePermissionAsync(Guid userId, Guid documentId);
     }
 
-    public interface IAccessControlService
-    {
-        Task<bool> CheckAccessAsync(Guid userId, Guid documentId, string requiredAction);
-        Task<List<Document>> GetAccessibleDocumentsAsync(Guid userId);
-        Task GrantAccessAsync(Guid userId, Guid documentId, string accessLevel);
-        Task RevokeAccessAsync(Guid userId, Guid documentId);
-    }
-
-    // =====================================================
-    // SERVICE INTERFACES
-    // =====================================================
-
-    public interface IAuthenticationService
-    {
-        Task<AuthenticationResult> AuthenticateAsync(string email, string password);
-        Task<User> RegisterAsync(string email, string fullName, string password, Guid organizationId);
-        Task<bool> ValidateTokenAsync(string token);
-    }
-
-    public interface IDocumentService
-    {
-        Task<Document> CreateDocumentAsync(Guid organizationId, Guid userId, CreateDocumentRequest request);
-        Task<Document> GetDocumentAsync(Guid id);
-        Task UpdateDocumentAsync(Document document);
-        Task DeleteDocumentAsync(Guid id);
-    }
-
-    public interface IWorkflowService
-    {
-        Task<DocumentWorkflow> CreateWorkflowAsync(Guid organizationId, DocumentWorkflow workflow);
-        Task SubmitForApprovalAsync(Guid documentId);
-        Task ApproveAsync(Guid approvalTaskId, string comments);
-        Task RejectAsync(Guid approvalTaskId, string reason);
-    }
-
-    public interface IAuditService
-    {
-        Task LogActionAsync(Guid organizationId, Guid userId, string action, string resourceType, Guid resourceId);
-        Task<List<AuditLog>> GetLogsAsync(Guid organizationId, DateTime from, DateTime to);
-    }
-
-    public interface ISearchService
-    {
-        Task<List<SearchResult>> SearchAsync(SearchQuery query);
-        Task<Dictionary<string, int>> GetAnalyticsAsync(Guid organizationId);
-    }
-
-    public interface INotificationService
-    {
-        Task SendNotificationAsync(Guid userId, string title, string message);
-        Task SendEmailAsync(string recipientEmail, string subject, string body);
-    }
-
-    public interface IEmailProvider
-    {
         Task<bool> SendAsync(string recipientEmail, string subject, string body, string htmlBody);
         Task<bool> SendWithAttachmentsAsync(string recipientEmail, string subject, string body, List<EmailAttachment> attachments);
     }
